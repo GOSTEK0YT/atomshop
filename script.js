@@ -210,7 +210,7 @@ form.addEventListener("submit", async (event) => {
   submitButton.disabled = true;
   submitButton.textContent = "Nadawanie produktu...";
   formMessage.className = "form-note";
-  formMessage.textContent = "Testowa platnosc zaakceptowana. Lacze sie z serwerem Minecraft...";
+  formMessage.textContent = "Przyjmuję zamówienie i przygotowuję produkt dla gracza...";
 
   try {
     const response = await fetch("/api/orders", {
@@ -247,7 +247,7 @@ freeKeyForm.addEventListener("submit", async (event) => {
   freeKeyButton.disabled = true;
   freeKeyButton.textContent = "Nadawanie...";
   freeKeyMessage.className = "form-note";
-  freeKeyMessage.textContent = "Sprawdzam cooldown i lacze sie z serwerem...";
+  freeKeyMessage.textContent = "Sprawdzam odbiór i przygotowuję darmowy klucz...";
 
   try {
     const response = await fetch("/api/free-key", {

@@ -498,6 +498,7 @@ details p {
 
 .free-key-slot {
   display: grid;
+  overflow: hidden;
   width: 132px;
   aspect-ratio: 1;
   place-items: center;
@@ -510,6 +511,13 @@ details p {
   font-size: 0.9rem;
   font-weight: 800;
   text-align: center;
+}
+
+.free-key-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .free-key-copy {
