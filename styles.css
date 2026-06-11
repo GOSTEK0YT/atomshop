@@ -478,10 +478,9 @@ details p {
 
 .free-key-card {
   display: grid;
-  grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1.2fr);
-  gap: clamp(1rem, 4vw, 2.4rem);
-  align-items: center;
-  padding: clamp(1rem, 3vw, 1.4rem);
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 1.6rem);
   border: 1px solid var(--line);
   border-radius: 8px;
   background:
@@ -491,24 +490,9 @@ details p {
   box-shadow: var(--shadow);
 }
 
-.free-key-art {
-  min-height: 260px;
-  overflow: hidden;
-  border: 1px solid rgba(78, 231, 255, 0.3);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.free-key-art img {
-  width: 100%;
-  height: 100%;
-  min-height: 260px;
-  object-fit: cover;
-}
-
 .free-key-copy {
   display: grid;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 .free-key-copy p:not(.eyebrow) {
@@ -520,7 +504,8 @@ details p {
 .free-key-form {
   display: grid;
   gap: 0.85rem;
-  max-width: 520px;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  align-items: end;
 }
 
 .free-key-form label {
@@ -761,7 +746,6 @@ details p {
 
   .hero,
   .checkout-section,
-  .free-key-card,
   .info-section {
     grid-template-columns: 1fr;
   }
@@ -816,6 +800,10 @@ details p {
 
   .product-buy {
     display: grid;
+  }
+
+  .free-key-form {
+    grid-template-columns: 1fr;
   }
 
   .cart-row {
