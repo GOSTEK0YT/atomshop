@@ -281,7 +281,7 @@ function updateFreeKeyCooldown() {
 
   if (remaining <= 0) {
     freeKeyButton.disabled = false;
-    freeKeyButton.textContent = "Odbierz darmowy klucz";
+    freeKeyButton.textContent = "Odbierz";
     return;
   }
 
