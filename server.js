@@ -53,6 +53,8 @@ const mimeTypes = {
 };
 
 const nickPattern = /^[A-Za-z0-9_]{3,16}$/;
+const freeKeyCooldownMs = 24 * 60 * 60 * 1000;
+const freeKeyClaims = new Map();
 
 const server = http.createServer(async (req, res) => {
   try {
@@ -69,6 +71,10 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === "POST" && url.pathname === "/api/orders") {
       return handleOrder(req, res);
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/free-key") {
+      return handleFreeKey(req, res);
     }
 
     if (req.method === "GET" || req.method === "HEAD") {
@@ -138,6 +144,46 @@ async function handleOrder(req, res) {
       ok: false,
       orderId,
       message: "Zamowienie przyjete, ale nie udalo sie wyslac komend na serwer Minecraft.",
+    });
+  }
+}
+
+async function handleFreeKey(req, res) {
+  const body = await readJson(req);
+  const nick = String(body?.nick || "").trim();
+
+  if (!nickPattern.test(nick)) {
+    return sendJson(res, 400, { ok: false, message: "Podaj poprawny nick Minecraft." });
+  }
+
+  const ip = String(req.headers["x-forwarded-for"] || req.socket.remoteAddress || "unknown").split(",")[0].trim();
+  const key = `${nick.toLowerCase()}|${ip}`;
+  const now = Date.now();
+  const lastClaim = freeKeyClaims.get(key) || 0;
+  const availableAt = lastClaim + freeKeyCooldownMs;
+
+  if (lastClaim && now < availableAt) {
+    return sendJson(res, 429, {
+      ok: false,
+      message: "Darmowy klucz byl juz odebrany. Sprobuj ponownie pozniej.",
+      availableAt,
+    });
+  }
+
+  try {
+    await grantMinecraftProducts([`crate key give ${nick} rzadka 1`]);
+    freeKeyClaims.set(key, now);
+
+    sendJson(res, 200, {
+      ok: true,
+      availableAt: now + freeKeyCooldownMs,
+      message: `Darmowy klucz zostal nadany graczowi ${nick}.`,
+    });
+  } catch (error) {
+    console.error("[free-key] Minecraft delivery failed", error);
+    sendJson(res, 502, {
+      ok: false,
+      message: "Nie udalo sie nadac darmowego klucza na serwerze Minecraft.",
     });
   }
 }

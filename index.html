@@ -22,6 +22,7 @@
       <nav class="main-nav" aria-label="Główna nawigacja">
         <a href="#rangi">Rangi</a>
         <a href="#klucze">Klucze</a>
+        <a href="#darmowy-klucz">Darmowy klucz</a>
         <a href="#jak-to-dziala">Jak kupić</a>
         <a href="#pomoc">Pomoc</a>
       </nav>
@@ -86,6 +87,29 @@
           <p>Klucze możesz sprzedawać pojedynczo albo jako pakiety. Tutaj są gotowe trzy typy.</p>
         </div>
         <div class="product-grid" id="keyProducts"></div>
+      </section>
+
+      <section class="free-key-section" id="darmowy-klucz">
+        <div class="free-key-card">
+          <div class="free-key-art">
+            <img src="assets/key-blue.png" alt="Darmowy klucz dzienny" />
+          </div>
+          <div class="free-key-copy">
+            <p class="eyebrow">Bonus dzienny</p>
+            <h2>Darmowy klucz co 24h</h2>
+            <p>
+              Wpisz nick Minecraft i odbierz darmowy klucz. Kolejny odbiór będzie możliwy po upływie 24 godzin.
+            </p>
+            <form class="free-key-form" id="freeKeyForm">
+              <label>
+                Nick Minecraft
+                <input name="nick" type="text" minlength="3" maxlength="16" placeholder="np. Gracz123" required />
+              </label>
+              <button class="primary-button" id="freeKeyButton" type="submit">Odbierz darmowy klucz</button>
+              <p class="form-note" id="freeKeyMessage" role="status"></p>
+            </form>
+          </div>
+        </div>
       </section>
 
       <section class="steps-section" id="jak-to-dziala">
@@ -204,6 +228,6 @@
       <a href="#top">Do góry</a>
     </footer>
 
-    <script src="script.js?v=20260611-rcon"></script>
+    <script src="script.js?v=20260611-free-key"></script>
   </body>
 </html>

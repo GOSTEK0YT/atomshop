@@ -70,6 +70,10 @@ const cartTotal = document.querySelector("#cartTotal");
 const cartCount = document.querySelector("#cartCount");
 const form = document.querySelector("#orderForm");
 const formMessage = document.querySelector("#formMessage");
+const freeKeyForm = document.querySelector("#freeKeyForm");
+const freeKeyMessage = document.querySelector("#freeKeyMessage");
+const freeKeyButton = document.querySelector("#freeKeyButton");
+const freeKeyCooldownKey = "atomshop-free-key-available-at";
 
 const formatPrice = (value) =>
   new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN" }).format(value);
@@ -234,5 +238,61 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+freeKeyForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const data = new FormData(freeKeyForm);
+  const nick = data.get("nick");
+
+  freeKeyButton.disabled = true;
+  freeKeyButton.textContent = "Nadawanie...";
+  freeKeyMessage.className = "form-note";
+  freeKeyMessage.textContent = "Sprawdzam cooldown i lacze sie z serwerem...";
+
+  try {
+    const response = await fetch("/api/free-key", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nick }),
+    });
+    const result = await response.json();
+
+    if (result.availableAt) {
+      localStorage.setItem(freeKeyCooldownKey, String(result.availableAt));
+    }
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.message || "Nie udalo sie odebrac darmowego klucza.");
+    }
+
+    freeKeyMessage.className = "form-note success";
+    freeKeyMessage.textContent = result.message;
+    updateFreeKeyCooldown();
+  } catch (error) {
+    freeKeyMessage.className = "form-note";
+    freeKeyMessage.textContent = error.message;
+    updateFreeKeyCooldown();
+  }
+});
+
+function updateFreeKeyCooldown() {
+  const availableAt = Number(localStorage.getItem(freeKeyCooldownKey) || 0);
+  const remaining = availableAt - Date.now();
+
+  if (remaining <= 0) {
+    freeKeyButton.disabled = false;
+    freeKeyButton.textContent = "Odbierz darmowy klucz";
+    return;
+  }
+
+  const hours = Math.floor(remaining / 3_600_000);
+  const minutes = Math.ceil((remaining % 3_600_000) / 60_000);
+
+  freeKeyButton.disabled = true;
+  freeKeyButton.textContent = `Dostepne za ${hours}h ${minutes}min`;
+}
+
 renderProducts();
 renderCart();
+updateFreeKeyCooldown();
+setInterval(updateFreeKeyCooldown, 30_000);
