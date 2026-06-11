@@ -11,9 +11,9 @@ services:
     envVars:
       - key: PAYMENT_MODE
         value: test
-      - key: RCON_HOST
-        sync: false
-      - key: RCON_PORT
-        value: 25575
-      - key: RCON_PASSWORD
+      - key: PANEL_API_URL
+        value: https://panel.pepehost.pl
+      - key: PANEL_SERVER_ID
+        value: 4432ca12
+      - key: PANEL_API_KEY
         sync: false

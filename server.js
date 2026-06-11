@@ -61,6 +61,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/health") {
       return sendJson(res, 200, {
         ok: true,
+        panelApiConfigured: Boolean(process.env.PANEL_API_URL && process.env.PANEL_API_KEY && process.env.PANEL_SERVER_ID),
         rconConfigured: Boolean(process.env.RCON_HOST && process.env.RCON_PASSWORD),
         mode: process.env.PAYMENT_MODE || "test",
       });
@@ -132,11 +133,11 @@ async function handleOrder(req, res) {
       message: `Zamowienie ${orderId} zostalo nadane graczowi ${nick}.`,
     });
   } catch (error) {
-    console.error(`[${orderId}] RCON delivery failed`, error);
+    console.error(`[${orderId}] Minecraft delivery failed`, error);
     sendJson(res, 502, {
       ok: false,
       orderId,
-      message: "Zamowienie przyjete, ale nie udalo sie polaczyc z serwerem Minecraft przez RCON.",
+      message: "Zamowienie przyjete, ale nie udalo sie wyslac komend na serwer Minecraft.",
     });
   }
 }
@@ -190,7 +191,12 @@ function readJson(req) {
 
 async function grantMinecraftProducts(commands) {
   if (process.env.RCON_DRY_RUN === "true") {
-    console.log("[RCON dry-run]", commands);
+    console.log("[delivery dry-run]", commands);
+    return;
+  }
+
+  if (process.env.PANEL_API_URL && process.env.PANEL_API_KEY && process.env.PANEL_SERVER_ID) {
+    await sendPanelCommands(commands);
     return;
   }
 
@@ -210,6 +216,29 @@ async function grantMinecraftProducts(commands) {
     }
   } finally {
     client.close();
+  }
+}
+
+async function sendPanelCommands(commands) {
+  const baseUrl = process.env.PANEL_API_URL.replace(/\/+$/, "");
+  const serverId = process.env.PANEL_SERVER_ID;
+  const endpoint = `${baseUrl}/api/client/servers/${serverId}/command`;
+
+  for (const command of commands) {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.PANEL_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ command }),
+    });
+
+    if (!response.ok) {
+      const details = await response.text();
+      throw new Error(`Panel command failed: ${response.status} ${details}`);
+    }
   }
 }
 
