@@ -1,12 +1,19 @@
 services:
   - type: web
     name: atomshop
-    runtime: static
-    buildCommand: echo "Static site ready"
-    staticPublishPath: .
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
     branch: main
     autoDeploy: true
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    healthCheckPath: /api/health
+    envVars:
+      - key: PAYMENT_MODE
+        value: test
+      - key: RCON_HOST
+        sync: false
+      - key: RCON_PORT
+        value: 25575
+      - key: RCON_PASSWORD
+        sync: false

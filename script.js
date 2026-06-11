@@ -184,7 +184,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (cart.size === 0) {
@@ -195,11 +195,43 @@ form.addEventListener("submit", (event) => {
 
   const data = new FormData(form);
   const nick = data.get("nick");
+  const email = data.get("email");
   const payment = data.get("payment");
-  const orderId = `AC-${Date.now().toString().slice(-6)}`;
+  const submitButton = form.querySelector("button[type='submit']");
+  const items = Array.from(cart.values()).map(({ product, quantity }) => ({
+    id: product.id,
+    quantity,
+  }));
 
-  formMessage.className = "form-note success";
-  formMessage.textContent = `Zamówienie ${orderId} dla gracza ${nick} jest gotowe. Następny krok: podpiąć płatność ${payment}.`;
+  submitButton.disabled = true;
+  submitButton.textContent = "Nadawanie produktu...";
+  formMessage.className = "form-note";
+  formMessage.textContent = "Testowa platnosc zaakceptowana. Lacze sie z serwerem Minecraft...";
+
+  try {
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nick, email, payment, items }),
+    });
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      throw new Error(result.message || "Nie udalo sie zrealizowac zamowienia.");
+    }
+
+    cart.clear();
+    renderCart();
+    form.reset();
+    formMessage.className = "form-note success";
+    formMessage.textContent = `${result.message} Numer: ${result.orderId}.`;
+  } catch (error) {
+    formMessage.className = "form-note";
+    formMessage.textContent = error.message;
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Zloz zamowienie";
+  }
 });
 
 renderProducts();
