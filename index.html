@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AtomCraft.pl - Sklep serwera</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700;800&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-glow" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="AtomCraft.pl">
+        <img src="assets/atomcraft-logo.png" alt="AtomCraft.pl" />
+      </a>
+      <nav class="main-nav" aria-label="Główna nawigacja">
+        <a href="#rangi">Rangi</a>
+        <a href="#klucze">Klucze</a>
+        <a href="#jak-to-dziala">Jak kupić</a>
+        <a href="#pomoc">Pomoc</a>
+      </nav>
+      <a class="cart-pill" href="#koszyk" aria-label="Przejdź do koszyka">
+        Koszyk <span id="cartCount">0</span>
+      </a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-media">
+          <img src="assets/atomcraft-logo.png" alt="Logo AtomCraft.pl" />
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Oficjalny sklep serwera</p>
+          <h1>Rangi, kity i klucze <span>AtomCraft.pl</span></h1>
+          <p>
+            Wybierz produkt, podaj nick z gry i złóż zamówienie. Strona jest
+            gotowa pod podpięcie płatności, Discorda lub automatycznej dostawy
+            komendą na serwerze.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#rangi">Kup rangę</a>
+            <a class="secondary-button" href="#klucze">Kup klucze</a>
+          </div>
+          <div class="server-strip" aria-label="Informacje o serwerze">
+            <span>IP: atomcraft.pl</span>
+            <span>Tryb: Survival + Skrzynki</span>
+            <span>Dostawa: po opłaceniu</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-band" aria-label="Zalety sklepu">
+        <article>
+          <strong>Bezpieczne zamówienie</strong>
+          <span>Podsumowanie przed wysłaniem i jasne dane gracza.</span>
+        </article>
+        <article>
+          <strong>Szybka dostawa</strong>
+          <span>Produkty przygotowane pod automatyczne nadanie.</span>
+        </article>
+        <article>
+          <strong>Wsparcie</strong>
+          <span>Kontakt przez Discord po każdym zakupie.</span>
+        </article>
+      </section>
+
+      <section class="shop-section" id="rangi">
+        <div class="section-heading">
+          <p class="eyebrow">Kity premium</p>
+          <h2>Rangi i zestawy</h2>
+          <p>Każdy produkt ma miejsce na grafikę, listę bonusów i przycisk dodania do koszyka.</p>
+        </div>
+        <div class="product-grid" id="rankProducts"></div>
+      </section>
+
+      <section class="shop-section" id="klucze">
+        <div class="section-heading">
+          <p class="eyebrow">Skrzynki</p>
+          <h2>Klucze do losowania</h2>
+          <p>Klucze możesz sprzedawać pojedynczo albo jako pakiety. Tutaj są gotowe trzy typy.</p>
+        </div>
+        <div class="product-grid" id="keyProducts"></div>
+      </section>
+
+      <section class="steps-section" id="jak-to-dziala">
+        <div class="section-heading">
+          <p class="eyebrow">Proces</p>
+          <h2>Jak działa zakup</h2>
+        </div>
+        <div class="steps">
+          <article>
+            <span>01</span>
+            <h3>Dodaj produkt</h3>
+            <p>Wybierz kit albo klucz i ustaw ilość w koszyku.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Podaj nick</h3>
+            <p>Wpisz dokładny nick Minecraft, żeby produkt trafił do dobrego gracza.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Opłać zamówienie</h3>
+            <p>Po podpięciu operatora płatności przycisk może kierować do finalizacji.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="checkout-section" id="koszyk">
+        <div class="cart-panel">
+          <div class="section-heading compact">
+            <p class="eyebrow">Koszyk</p>
+            <h2>Twoje zamówienie</h2>
+          </div>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="cart-empty" id="cartEmpty">
+            Koszyk jest pusty. Dodaj rangę lub klucz, aby rozpocząć.
+          </div>
+          <div class="cart-total">
+            <span>Razem</span>
+            <strong id="cartTotal">0,00 zł</strong>
+          </div>
+        </div>
+
+        <form class="order-form" id="orderForm">
+          <div class="section-heading compact">
+            <p class="eyebrow">Finalizacja</p>
+            <h2>Dane do zakupu</h2>
+          </div>
+          <label>
+            Nick Minecraft
+            <input name="nick" type="text" minlength="3" maxlength="16" placeholder="np. Gracz123" required />
+          </label>
+          <label>
+            E-mail
+            <input name="email" type="email" placeholder="twoj@email.pl" required />
+          </label>
+          <label>
+            Kod rabatowy
+            <input name="coupon" type="text" placeholder="Opcjonalnie" />
+          </label>
+          <fieldset>
+            <legend>Metoda płatności</legend>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="Przelewy24" checked />
+              <span>Przelewy24 / BLIK</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="PayPal" />
+              <span>PayPal</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="PSC" />
+              <span>PaySafeCard</span>
+            </label>
+          </fieldset>
+          <label class="terms">
+            <input type="checkbox" required />
+            <span>Akceptuję regulamin sklepu i wiem, że zakup dotyczy wirtualnych przedmiotów.</span>
+          </label>
+          <button class="primary-button full" type="submit">Złóż zamówienie</button>
+          <p class="form-note" id="formMessage" role="status"></p>
+        </form>
+      </section>
+
+      <section class="info-section" id="pomoc">
+        <div>
+          <p class="eyebrow">Pomoc</p>
+          <h2>FAQ i regulamin</h2>
+          <p>
+            W razie problemu po zakupie przygotuj nick, e-mail i numer zamówienia.
+            To ułatwia sprawdzenie płatności i nadanie produktu.
+          </p>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary>Kiedy dostanę produkt?</summary>
+            <p>Po opłaceniu zamówienia produkt powinien zostać nadany automatycznie albo przez administrację.</p>
+          </details>
+          <details>
+            <summary>Co jeśli pomylę nick?</summary>
+            <p>Napisz do administracji na Discordzie i podaj dane zamówienia.</p>
+          </details>
+          <details>
+            <summary>Czy mogę dostać zwrot?</summary>
+            <p>Zwroty zależą od regulaminu serwera. Warto dopisać tutaj pełne zasady przed publikacją sklepu.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>AtomCraft.pl</span>
+      <span>Sklep demonstracyjny gotowy do podpięcia płatności.</span>
+      <a href="#top">Do góry</a>
+    </footer>
+
+    <script src="script.js?v=20260611-99"></script>
+  </body>
+</html>
