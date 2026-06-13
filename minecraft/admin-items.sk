@@ -16,9 +16,36 @@ function ac_open_admin_items(p: player):
   set {_inv} to {_p}'s current inventory
 
   loop 54 times:
+    set slot (loop-number - 1) of {_inv} to light gray stained glass pane named " "
+
+  loop 9 times:
     set slot (loop-number - 1) of {_inv} to purple stained glass pane named " "
 
-  set slot 4 of {_inv} to nether star named "&d&lADMIN ITEMS" with lore "&7Panel szybkich przedmiotow", "&7dla administracji AtomCraft.pl", "", "&8Kliknij item, aby go otrzymac."
+  set slot 1 of {_inv} to magenta stained glass pane named " "
+  set slot 2 of {_inv} to magenta stained glass pane named " "
+  set slot 3 of {_inv} to purple stained glass pane named "&d&lADMIN"
+  set slot 4 of {_inv} to nether star named "&f&lADMIN ITEMS" with lore "&7Panel szybkich przedmiotow", "&7dla administracji AtomCraft.pl", "", "&8Kliknij item, aby go otrzymac."
+  set slot 5 of {_inv} to purple stained glass pane named "&d&lITEMS"
+  set slot 6 of {_inv} to magenta stained glass pane named " "
+  set slot 7 of {_inv} to magenta stained glass pane named " "
+
+  set slot 9 of {_inv} to gray stained glass pane named " "
+  set slot 17 of {_inv} to gray stained glass pane named " "
+  set slot 18 of {_inv} to gray stained glass pane named " "
+  set slot 26 of {_inv} to gray stained glass pane named " "
+  set slot 27 of {_inv} to gray stained glass pane named " "
+  set slot 35 of {_inv} to gray stained glass pane named " "
+  set slot 36 of {_inv} to gray stained glass pane named " "
+  set slot 44 of {_inv} to gray stained glass pane named " "
+  set slot 45 of {_inv} to gray stained glass pane named " "
+  set slot 46 of {_inv} to gray stained glass pane named " "
+  set slot 47 of {_inv} to gray stained glass pane named " "
+  set slot 48 of {_inv} to gray stained glass pane named " "
+  set slot 49 of {_inv} to gray stained glass pane named " "
+  set slot 50 of {_inv} to gray stained glass pane named " "
+  set slot 51 of {_inv} to gray stained glass pane named " "
+  set slot 52 of {_inv} to gray stained glass pane named " "
+  set slot 53 of {_inv} to gray stained glass pane named " "
 
   set slot 10 of {_inv} to netherite sword named "&dMiecz Admina" with lore "&7Sharpness V, Fire Aspect II", "&8Kliknij, aby odebrac."
   set slot 11 of {_inv} to netherite pickaxe named "&dKilof Admina" with lore "&7Efficiency V, Fortune III", "&8Kliknij, aby odebrac."
@@ -44,7 +71,9 @@ function ac_open_admin_items(p: player):
   set slot 33 of {_inv} to beacon named "&fLight Block x16" with lore "&7Ukryte oswietlenie.", "&8Kliknij, aby odebrac."
   set slot 34 of {_inv} to end crystal named "&5Structure Void x16" with lore "&7Do prac technicznych.", "&8Kliknij, aby odebrac."
 
-  set slot 40 of {_inv} to lime dye named "&aOdswiez menu" with lore "&7Przeladuje GUI bez wychodzenia."
+  set slot 39 of {_inv} to lime dye named "&aOdswiez menu" with lore "&7Przeladuje GUI bez wychodzenia."
+  set slot 40 of {_inv} to paper named "&fInformacje" with lore "&7Styl GUI: &dcustom pixel", "&7Motyw: &5AtomCraft Admin Items", "&8Wzorowane na podgladzie ServerCreators."
+  set slot 41 of {_inv} to anvil named "&7Serwis" with lore "&7Miejsce na kolejne narzedzia admina.", "&8Mozesz tu dodac wlasne akcje."
   set slot 49 of {_inv} to barrier named "&cZamknij" with lore "&7Kliknij, aby zamknac menu."
 
 on inventory click:
@@ -161,7 +190,7 @@ on inventory click:
       execute console command "minecraft:give %player% minecraft:structure_void 16"
       send "{@prefix}&5Odebrano structure void x16." to player
 
-    else if clicked slot is 40:
+    else if clicked slot is 39:
       ac_open_admin_items(player)
 
     else if clicked slot is 49:
