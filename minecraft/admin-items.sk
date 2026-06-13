@@ -1,0 +1,172 @@
+options:
+  gui-name: &5&lAtomCraft &8| &dAdmin Items
+  permission: atomcraft.adminitems
+  prefix: &8[&dAtomCraft&8] &7
+
+command /adminitems:
+  aliases: ai, aitems
+  permission: {@permission}
+  permission message: {@prefix}&cNie masz dostepu do tego menu.
+  trigger:
+    ac_open_admin_items(player)
+
+function ac_open_admin_items(p: player):
+  open chest inventory with 6 rows named "{@gui-name}" to {_p}
+  wait 1 tick
+  set {_inv} to {_p}'s current inventory
+
+  loop 54 times:
+    set slot (loop-number - 1) of {_inv} to purple stained glass pane named " "
+
+  set slot 4 of {_inv} to nether star named "&d&lADMIN ITEMS" with lore "&7Panel szybkich przedmiotow", "&7dla administracji AtomCraft.pl", "", "&8Kliknij item, aby go otrzymac."
+
+  set slot 10 of {_inv} to netherite sword named "&dMiecz Admina" with lore "&7Sharpness V, Fire Aspect II", "&8Kliknij, aby odebrac."
+  set slot 11 of {_inv} to netherite pickaxe named "&dKilof Admina" with lore "&7Efficiency V, Fortune III", "&8Kliknij, aby odebrac."
+  set slot 12 of {_inv} to netherite axe named "&dSiekiera Admina" with lore "&7Efficiency V, Sharpness V", "&8Kliknij, aby odebrac."
+  set slot 13 of {_inv} to bow named "&dLuk Admina" with lore "&7Power V, Infinity", "&8Kliknij, aby odebrac."
+  set slot 14 of {_inv} to elytra named "&dElytra Admina" with lore "&7Do szybkiego testowania mapy.", "&8Kliknij, aby odebrac."
+  set slot 15 of {_inv} to shield named "&dTarcza Admina" with lore "&7Zapasowa tarcza do eventow.", "&8Kliknij, aby odebrac."
+  set slot 16 of {_inv} to totem of undying named "&dTotem Admina" with lore "&7Awaryjny totem.", "&8Kliknij, aby odebrac."
+
+  set slot 19 of {_inv} to tripwire hook named "&bKlucz Rzadki" with lore "&7Test klucza do skrzynki.", "&8Kliknij, aby odebrac."
+  set slot 20 of {_inv} to tripwire hook named "&5Klucz Epicki" with lore "&7Test klucza epickiego.", "&8Kliknij, aby odebrac."
+  set slot 21 of {_inv} to tripwire hook named "&dKlucz Atom" with lore "&7Test klucza atomowego.", "&8Kliknij, aby odebrac."
+  set slot 22 of {_inv} to golden apple named "&6Golden Apple x16" with lore "&7Pakiet do testow PvP.", "&8Kliknij, aby odebrac."
+  set slot 23 of {_inv} to experience bottle named "&aXP Bottle x64" with lore "&7Szybkie doswiadczenie.", "&8Kliknij, aby odebrac."
+  set slot 24 of {_inv} to ender pearl named "&dEnder Pearl x16" with lore "&7Mobilnosc do testow.", "&8Kliknij, aby odebrac."
+  set slot 25 of {_inv} to cooked beef named "&cSteki x64" with lore "&7Jedzenie dla administracji.", "&8Kliknij, aby odebrac."
+
+  set slot 28 of {_inv} to redstone named "&cUlecz sie" with lore "&7Przywraca zdrowie i glod.", "&8Kliknij, aby uzyc."
+  set slot 29 of {_inv} to firework rocket named "&eRakiety x64" with lore "&7Do elytry.", "&8Kliknij, aby odebrac."
+  set slot 30 of {_inv} to chest named "&6Kit Eventowy" with lore "&7Podstawowy zestaw do eventow.", "&8Kliknij, aby odebrac."
+  set slot 31 of {_inv} to command block named "&cBlok Komend" with lore "&7Tylko dla operatorow.", "&8Kliknij, aby odebrac."
+  set slot 32 of {_inv} to barrier named "&4Barrier x16" with lore "&7Do zabezpieczania aren.", "&8Kliknij, aby odebrac."
+  set slot 33 of {_inv} to beacon named "&fLight Block x16" with lore "&7Ukryte oswietlenie.", "&8Kliknij, aby odebrac."
+  set slot 34 of {_inv} to end crystal named "&5Structure Void x16" with lore "&7Do prac technicznych.", "&8Kliknij, aby odebrac."
+
+  set slot 40 of {_inv} to lime dye named "&aOdswiez menu" with lore "&7Przeladuje GUI bez wychodzenia."
+  set slot 49 of {_inv} to barrier named "&cZamknij" with lore "&7Kliknij, aby zamknac menu."
+
+on inventory click:
+  if name of event-inventory is "{@gui-name}":
+    cancel event
+    if player does not have permission "{@permission}":
+      close player's inventory
+      send "{@prefix}&cNie masz dostepu do tego menu." to player
+      stop
+
+    if clicked slot is 10:
+      set {_item} to netherite sword named "&dMiecz Admina"
+      enchant {_item} with sharpness 5
+      enchant {_item} with fire aspect 2
+      enchant {_item} with unbreaking 3
+      give {_item} to player
+      send "{@prefix}&7Odebrano: &dMiecz Admina&7." to player
+
+    else if clicked slot is 11:
+      set {_item} to netherite pickaxe named "&dKilof Admina"
+      enchant {_item} with efficiency 5
+      enchant {_item} with fortune 3
+      enchant {_item} with unbreaking 3
+      give {_item} to player
+      send "{@prefix}&7Odebrano: &dKilof Admina&7." to player
+
+    else if clicked slot is 12:
+      set {_item} to netherite axe named "&dSiekiera Admina"
+      enchant {_item} with efficiency 5
+      enchant {_item} with sharpness 5
+      enchant {_item} with unbreaking 3
+      give {_item} to player
+      send "{@prefix}&7Odebrano: &dSiekiera Admina&7." to player
+
+    else if clicked slot is 13:
+      set {_item} to bow named "&dLuk Admina"
+      enchant {_item} with power 5
+      enchant {_item} with infinity 1
+      enchant {_item} with unbreaking 3
+      give {_item} to player
+      give 1 arrow to player
+      send "{@prefix}&7Odebrano: &dLuk Admina&7." to player
+
+    else if clicked slot is 14:
+      give elytra named "&dElytra Admina" to player
+      send "{@prefix}&7Odebrano elytre." to player
+
+    else if clicked slot is 15:
+      give shield named "&dTarcza Admina" to player
+      send "{@prefix}&7Odebrano tarcze." to player
+
+    else if clicked slot is 16:
+      give totem of undying named "&dTotem Admina" to player
+      send "{@prefix}&7Odebrano totem." to player
+
+    else if clicked slot is 19:
+      give tripwire hook named "&bKlucz Rzadki" with lore "&7Klucz testowy AtomCraft.pl" to player
+      send "{@prefix}&7Odebrano: &bKlucz Rzadki&7." to player
+
+    else if clicked slot is 20:
+      give tripwire hook named "&5Klucz Epicki" with lore "&7Klucz testowy AtomCraft.pl" to player
+      send "{@prefix}&7Odebrano: &5Klucz Epicki&7." to player
+
+    else if clicked slot is 21:
+      give tripwire hook named "&dKlucz Atom" with lore "&7Klucz testowy AtomCraft.pl" to player
+      send "{@prefix}&7Odebrano: &dKlucz Atom&7." to player
+
+    else if clicked slot is 22:
+      give 16 golden apples to player
+      send "{@prefix}&7Odebrano golden apple x16." to player
+
+    else if clicked slot is 23:
+      give 64 experience bottles to player
+      send "{@prefix}&7Odebrano XP bottle x64." to player
+
+    else if clicked slot is 24:
+      give 16 ender pearls to player
+      send "{@prefix}&7Odebrano ender pearl x16." to player
+
+    else if clicked slot is 25:
+      give 64 cooked beef to player
+      send "{@prefix}&7Odebrano steki x64." to player
+
+    else if clicked slot is 28:
+      heal player
+      set food level of player to 20
+      send "{@prefix}&aUleczono i najedzono gracza." to player
+
+    else if clicked slot is 29:
+      give 64 firework rockets to player
+      send "{@prefix}&7Odebrano rakiety x64." to player
+
+    else if clicked slot is 30:
+      give 1 netherite sword to player
+      give 1 bow to player
+      give 16 golden apples to player
+      give 64 cooked beef to player
+      give 64 firework rockets to player
+      send "{@prefix}&6Odebrano kit eventowy." to player
+
+    else if clicked slot is 31:
+      give command block to player
+      send "{@prefix}&cOdebrano blok komend." to player
+
+    else if clicked slot is 32:
+      give 16 barriers to player
+      send "{@prefix}&4Odebrano barrier x16." to player
+
+    else if clicked slot is 33:
+      execute console command "minecraft:give %player% minecraft:light 16"
+      send "{@prefix}&fOdebrano light x16." to player
+
+    else if clicked slot is 34:
+      execute console command "minecraft:give %player% minecraft:structure_void 16"
+      send "{@prefix}&5Odebrano structure void x16." to player
+
+    else if clicked slot is 40:
+      ac_open_admin_items(player)
+
+    else if clicked slot is 49:
+      close player's inventory
+
+on inventory drag:
+  if name of event-inventory is "{@gui-name}":
+    cancel event
